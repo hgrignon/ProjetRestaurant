@@ -13,6 +13,11 @@ public class Restaurant {
     //Image;
     //Menu
 
+    public Restaurant(String nom, String description) {
+        this.nom = nom;
+        this.description = description;
+    }
+
     public Restaurant(String nom, Float nbEtoiles) {
         this.nom = nom;
         this.etoiles = nbEtoiles;
