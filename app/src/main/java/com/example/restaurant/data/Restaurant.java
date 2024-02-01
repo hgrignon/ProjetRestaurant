@@ -1,9 +1,12 @@
 package com.example.restaurant.data;
 
+import com.parse.ParseObject;
+
 public class Restaurant {
     String objectId;
     String nom;
-    Float etoiles;
+    // 1 = 1/2 etoiles
+    int nbEtoiles;
     String adresse;
     String description;
     Review avis; // Liste? jsp
@@ -13,19 +16,30 @@ public class Restaurant {
     //Image;
     //Menu
 
-    public Restaurant(String nom, String description) {
-        this.nom = nom;
-        this.description = description;
+    public static Restaurant RestaurantAdapterList(ParseObject o, int nbEtoiles) {
+        return new Restaurant(
+                (String) o.get("nom"),
+                nbEtoiles
+        );
     }
 
-    public Restaurant(String nom, Float nbEtoiles) {
-        this.nom = nom;
-        this.etoiles = nbEtoiles;
+    public static Restaurant RestaurantAdapterDetails(ParseObject o, int nbEtoiles) {
+        return new Restaurant(
+                (String) o.get("nom"),
+                nbEtoiles,
+                (String) o.get("adresse"),
+                (String) o.get("description")
+        );
     }
 
-    public Restaurant(String nom, float nbEtoiles, String adresse, String description) {
+    public Restaurant(String nom, int nbEtoiles) {
         this.nom = nom;
-        this.etoiles = nbEtoiles;
+        this.nbEtoiles = nbEtoiles;
+    }
+
+    public Restaurant(String nom, int nbEtoiles, String adresse, String description) {
+        this.nom = nom;
+        this.nbEtoiles = nbEtoiles;
         this.adresse = adresse;
         this.description = description;
     }
@@ -46,12 +60,12 @@ public class Restaurant {
         this.nom = nom;
     }
 
-    public Float getEtoiles() {
-        return etoiles;
+    public int getNbEtoiles() {
+        return nbEtoiles;
     }
 
-    public void setEtoiles(Float etoiles) {
-        this.etoiles = etoiles;
+    public void setNbEtoiles(int nbEtoiles) {
+        this.nbEtoiles = nbEtoiles;
     }
 
     public String getAdresse() {
