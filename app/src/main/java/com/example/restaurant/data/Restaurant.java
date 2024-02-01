@@ -1,6 +1,7 @@
 package com.example.restaurant.data;
 
 public class Restaurant {
+    String objectId;
     String nom;
     Float etoiles;
     String adresse;
@@ -28,6 +29,14 @@ public class Restaurant {
         this.etoiles = nbEtoiles;
         this.adresse = adresse;
         this.description = description;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getNom() {
