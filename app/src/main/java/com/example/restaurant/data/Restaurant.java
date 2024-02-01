@@ -8,6 +8,7 @@ public class Restaurant {
     Review avis; // Liste? jsp
     InfoReservations infos;
     Reservation resa; // Liste? jsp
+    RestaurantLabel labels; // Liste? jsp
 
     //Image;
     //Menu
