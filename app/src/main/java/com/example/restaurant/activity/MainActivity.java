@@ -21,6 +21,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ArrayList<Restaurant> restaurants = restaurantServices.parseRestaurants();
         Log.d("MainActivity","1 - " + restaurants.size());
-
+        restaurantServices.parseRestaurant("k4cB4FCCrE");
     }
 }
