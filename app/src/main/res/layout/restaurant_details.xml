@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/restaurantName"
+        android:layout_width="283dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="33dp"
+        android:text="Placeholder Nom Du Resto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="414dp"
+        android:layout_height="203dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantName"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="234dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="16dp"
+        android:text="Réserver"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/etoile1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/etoile2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/etoile1"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/etoile3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/etoile2"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/etoile4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/etoile3"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/etoile5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/etoile4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <TextView
+        android:id="@+id/restaurantNbAvis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="43 avis"
+        app:layout_constraintStart_toEndOf="@+id/etoile5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ScrollView
+        android:id="@+id/restaurantDescriptionScroll"
+        android:layout_width="312dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantNbAvis">
+
+
+        <TextView
+            android:id="@+id/restaurantDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:text=" Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae auctor mauris, sit amet posuere dui. In iaculis nec risus vel gravida. Ut vel tempus ipsum. Vestibulum feugiat quis mi id fringilla. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam a consectetur lorem, vel euismod arcu. Etiam non purus quis odio consequat placerat in quis sem. Suspendisse purus nunc, blandit at eros non, pulvinar commodo dui.  Cras bibendum sem quis vulputate commodo. Integer vitae ipsum et leo ullamcorper vestibulum. Proin hendrerit, velit malesuada ultricies posuere, felis quam ullamcorper odio, et mattis dolor libero ut lectus. Sed malesuada non sapien nec ultricies. Sed faucibus interdum erat. Quisque ac tincidunt orci. Sed sodales eu quam sed hendrerit. Vestibulum tincidunt mattis magna. Mauris quis turpis elementum sem mattis maximus. Duis imperdiet turpis eget volutpat ultricies. Aenean tellus quam, tempor sit amet lorem nec, ultrices fermentum est. Vivamus quis ultrices ante. Maecenas et porta dui. Vestibulum elementum, turpis at dictum vehicula, quam ante lobortis massa, ornare iaculis orci urna non mi. Aliquam a ex fringilla, rutrum tortor vitae, semper urna.  Mauris hendrerit eget nisi in ultrices. Phasellus porttitor lobortis pellentesque. Fusce aliquet, tortor et venenatis pharetra, ante sem tristique ligula, sit amet ullamcorper sapien massa id augue. Mauris molestie metus at semper aliquet. Sed sapien diam, elementum id lacus eget, venenatis condimentum dolor. Nunc turpis nulla, semper eget consectetur id, pharetra id ipsum. Aliquam vitae porta odio. Fusce aliquet mauris eu enim finibus, id efficitur sem aliquet. Etiam facilisis magna vel suscipit posuere. Etiam faucibus nunc nulla, eu porta massa fermentum vitae. Sed auctor elementum arcu at rutrum. Quisque sed consectetur justo, nec facilisis tortor. Nullam consectetur libero metus, non pellentesque mauris condimentum ut. "
+            android:gravity="center"
+            android:textAllCaps="false" />
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
