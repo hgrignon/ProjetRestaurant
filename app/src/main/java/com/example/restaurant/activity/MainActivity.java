@@ -24,30 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.restaurant_details);
-
-        RestaurantServices services = new RestaurantServicesImpl();
-        String id = "k4cB4FCCrE";
-        Restaurant resto = services.parseRestaurant(id);
-
-
-        ((TextView) findViewById(R.id.restaurantDescription)).setText(resto.getDescription() + "\n" +  resto.getAdresse());
-        ((TextView) findViewById(R.id.restaurantName)).setText(resto.getNom());
-
-        ((ImageView) findViewById(R.id.imageView)).setImageResource(R.drawable.restaurant_placeholder);
-
-        // Get number of stars
-        int stars = Math.round(resto.getNbEtoiles());
-        String displayedStars = "";
-        for (int i = 1; i<=5; i++){
-            if (i<=stars)
-                displayedStars += "⭐";
-            else displayedStars += "★";
-        }
-        ((TextView) findViewById(R.id.stars)).setText(displayedStars);
-
-
-
+        setContentView(R.layout.activity_main);
 
     }
 }
