@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         listRestaurant.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getSelectedItem();
+                String selectedItem = parent.getItemAtPosition(position).toString();
                 Intent intentMain = new Intent(MainActivity.this ,
                         RestaurantDetailsActivity.class);
                 intentMain.putExtra("idObject",selectedItem);

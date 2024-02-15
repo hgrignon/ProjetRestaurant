@@ -18,7 +18,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.restaurant_details);
 
         RestaurantServices services = new RestaurantServicesImpl();
-        String id = "k4cB4FCCrE";
+        String id = getIntent().getStringExtra("idObject");
         Restaurant resto = services.parseRestaurant(id);
 
 
