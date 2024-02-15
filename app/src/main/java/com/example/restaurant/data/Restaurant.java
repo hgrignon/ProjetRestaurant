@@ -19,6 +19,7 @@ public class Restaurant {
 
     public static Restaurant RestaurantAdapterList(ParseObject o, int nbEtoiles) {
         return new Restaurant(
+                (String) o.getObjectId(),
                 (String) o.get("nom"),
                 nbEtoiles
         );
@@ -37,7 +38,11 @@ public class Restaurant {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
     }
-
+    public Restaurant(String objectId, String nom, int nbEtoiles) {
+        this.nom = nom;
+        this.nbEtoiles = nbEtoiles;
+        this.objectId = objectId;
+    }
     public Restaurant(String nom, int nbEtoiles, String adresse, String description) {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
