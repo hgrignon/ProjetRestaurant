@@ -28,8 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ListView listRestaurant = (ListView) findViewById(R.id.listeRestau);
-        //recup liste placeholder
-        ArrayList<String> restaurants = initListeTemp();
+        ArrayList<String> restaurants = initListe();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, restaurants);
         listRestaurant.setAdapter(adapter);
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public ArrayList<String> initListeTemp(){
+    public ArrayList<String> initListe(){
         ArrayList<Restaurant> liste = restaurantServices.parseRestaurants();
         ArrayList<String> temp=new ArrayList();
         for(Restaurant restau : liste){
