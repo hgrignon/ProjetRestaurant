@@ -1,6 +1,10 @@
 package com.example.restaurant.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +40,27 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             else displayedStars += "★";
         }
         ((TextView) findViewById(R.id.stars)).setText(displayedStars);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_map) {
+            Intent intentMain = new Intent(RestaurantDetailsActivity.this , MainActivity.class);
+            RestaurantDetailsActivity.this.startActivity(intentMain);
+            return true;
+        } else
+        if (item.getItemId() == R.id.menu_map) {
+            Intent intentMain = new Intent(RestaurantDetailsActivity.this , MapActivity.class);
+            RestaurantDetailsActivity.this.startActivity(intentMain);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

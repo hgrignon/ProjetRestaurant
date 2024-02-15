@@ -2,6 +2,8 @@ package com.example.restaurant.data;
 
 import com.parse.ParseObject;
 
+import org.osmdroid.util.GeoPoint;
+
 public class Restaurant {
     String objectId;
     String nom;
@@ -14,6 +16,8 @@ public class Restaurant {
     Reservation resa; // Liste? jsp
     RestaurantLabel labels; // Liste? jsp
 
+    GeoPoint position;
+
     //Image;
     //Menu
 
@@ -21,7 +25,9 @@ public class Restaurant {
         return new Restaurant(
                 (String) o.getObjectId(),
                 (String) o.get("nom"),
-                nbEtoiles
+                nbEtoiles,
+                (Double) o.get("latitude"),
+                (Double) o.get("longitude")
         );
     }
 
@@ -34,14 +40,16 @@ public class Restaurant {
         );
     }
 
+    public Restaurant(String objectId, String nom, int nbEtoiles, Double latitude, Double longitude) {
+        this.objectId = objectId;
+        this.nom = nom;
+        this.nbEtoiles = nbEtoiles;
+        if (latitude != null && longitude != null )
+            this.position = new GeoPoint(latitude, longitude);
+    }
     public Restaurant(String nom, int nbEtoiles) {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
-    }
-    public Restaurant(String objectId, String nom, int nbEtoiles) {
-        this.nom = nom;
-        this.nbEtoiles = nbEtoiles;
-        this.objectId = objectId;
     }
     public Restaurant(String nom, int nbEtoiles, String adresse, String description) {
         this.nom = nom;
@@ -54,39 +62,23 @@ public class Restaurant {
         return objectId;
     }
 
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
     public String getNom() {
         return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public int getNbEtoiles() {
         return nbEtoiles;
     }
 
-    public void setNbEtoiles(int nbEtoiles) {
-        this.nbEtoiles = nbEtoiles;
-    }
-
     public String getAdresse() {
         return adresse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public GeoPoint getPosition() {
+        return position;
     }
 }

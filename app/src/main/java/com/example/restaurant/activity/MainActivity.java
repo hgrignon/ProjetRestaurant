@@ -1,20 +1,21 @@
 package com.example.restaurant.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.restaurant.R;
-import com.example.restaurant.activity.components.RestaurantListComponent;
 import com.example.restaurant.data.Restaurant;
-import com.example.restaurant.placeholder.RestoPlaceholder;
 
 import java.util.ArrayList;
 import com.example.restaurant.services.RestaurantServices;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         ListView listRestaurant = (ListView) findViewById(R.id.listeRestau);
         ArrayList<String> restaurants = initListe();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, restaurants);
@@ -46,10 +50,29 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<String> initListe(){
         ArrayList<Restaurant> liste = restaurantServices.parseRestaurants();
-        ArrayList<String> temp=new ArrayList();
+        ArrayList<String> temp = new ArrayList();
         for(Restaurant restau : liste){
             temp.add(restau.getObjectId());
         }
         return temp;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("aaaaa", "aaa");
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_map) {
+            Intent intentMain = new Intent(MainActivity.this , MapActivity.class);
+            MainActivity.this.startActivity(intentMain);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
