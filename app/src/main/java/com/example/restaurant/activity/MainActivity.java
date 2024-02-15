@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getSelectedItem();
                 Intent intentMain = new Intent(MainActivity.this ,
-                        DetailsActivity.class);
+                        RestaurantDetailsActivity.class);
                 intentMain.putExtra("idObject",selectedItem);
                 MainActivity.this.startActivity(intentMain);
             }
