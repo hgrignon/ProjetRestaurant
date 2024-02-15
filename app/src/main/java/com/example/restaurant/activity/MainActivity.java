@@ -24,10 +24,22 @@ public class MainActivity extends AppCompatActivity {
         Restaurant resto = services.parseRestaurant();
 
 
-        ((TextView) findViewById(R.id.restaurantDescription)).setText(resto.getDescription());
+        ((TextView) findViewById(R.id.restaurantDescription)).setText(resto.getDescription() + "\n" +  resto.getAdresse());
         ((TextView) findViewById(R.id.restaurantName)).setText(resto.getNom());
 
-        //((ImageView) findViewById(R.id.etoile1)).setImageDrawable(getResources().getDrawable(R.drawable.etoile_pleine));
+        ((ImageView) findViewById(R.id.imageView)).setImageResource(R.drawable.restaurant_placeholder);
+
+        // Get number of stars
+        int stars = Math.round(resto.getEtoiles());
+        String displayedStars = "";
+        for (int i = 1; i<=5; i++){
+            if (i<=stars)
+                displayedStars += "⭐";
+            else displayedStars += "★";
+        }
+        ((TextView) findViewById(R.id.stars)).setText(displayedStars);
+
+
 
 
     }
