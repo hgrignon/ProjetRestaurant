@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.restaurant.R;
+import com.example.restaurant.activity.adapter.RestaurantAdapter;
 import com.example.restaurant.data.Restaurant;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         ListView listRestaurant = (ListView) findViewById(R.id.listeRestau);
-        ArrayList<String> restaurants = initListe();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, restaurants);
+        ArrayList<Restaurant> restaurants = initListe();
+        RestaurantAdapter adapter = new RestaurantAdapter(this, restaurants);
         listRestaurant.setAdapter(adapter);
 
         listRestaurant.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,19 +49,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public ArrayList<String> initListe(){
-        ArrayList<Restaurant> liste = restaurantServices.parseRestaurants();
-        ArrayList<String> temp = new ArrayList();
-        for(Restaurant restau : liste){
-            temp.add(restau.getObjectId());
-        }
-        return temp;
+    public ArrayList<Restaurant> initListe(){
+        return restaurantServices.parseRestaurants();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("aaaaa", "aaa");
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
