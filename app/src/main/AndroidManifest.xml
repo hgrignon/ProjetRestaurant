@@ -27,6 +27,9 @@
             android:value="@string/back4app_client_key" />
 
         <activity
+            android:name=".activity.components.RestaurantListComponent"
+            android:exported="false" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
