@@ -1,11 +1,6 @@
 package com.example.restaurant.activity.adapter;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView.*;
-
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.restaurant.R;
-import com.example.restaurant.activity.MainActivity;
 import com.example.restaurant.activity.RestaurantDetailsActivity;
 import com.example.restaurant.data.Restaurant;
 import java.util.ArrayList;
@@ -57,8 +51,6 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
 
         holder.titreRestau.setText(restaurant.getNom());
         holder.adresse.setText(restaurant.getAdresse());
-
-        // Set the tag to the button to get the correct position on click
         holder.button2.setTag(position);
 
         holder.button2.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +58,6 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
             public void onClick(View v) {
                 int position = (Integer) v.getTag();
                 Restaurant selectedItem = getItem(position);
-
-                Log.d("aze :", selectedItem.getNom());
-
                 Intent intent = new Intent(mContext, RestaurantDetailsActivity.class);
                 intent.putExtra("idObject", selectedItem.getObjectId());
                 mContext.startActivity(intent);
