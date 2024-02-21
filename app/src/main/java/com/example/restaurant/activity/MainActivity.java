@@ -37,17 +37,6 @@ public class MainActivity extends AppCompatActivity {
         RestaurantAdapter adapter = new RestaurantAdapter(this, restaurants);
         listRestaurant.setAdapter(adapter);
 
-        listRestaurant.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Restaurant selectedItem = (Restaurant) parent.getItemAtPosition(position);
-                System.out.println("nom : " + selectedItem);
-                Intent intentMain = new Intent(MainActivity.this ,
-                        RestaurantDetailsActivity.class);
-                intentMain.putExtra("idObject",selectedItem.getObjectId());
-                MainActivity.this.startActivity(intentMain);
-            }
-        });
     }
 
     public ArrayList<Restaurant> initListe(){
