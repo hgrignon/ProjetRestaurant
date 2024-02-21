@@ -27,8 +27,10 @@ public class Restaurant {
                 (String) o.get("nom"),
                 nbEtoiles,
                 (Double) o.get("latitude"),
-                (Double) o.get("longitude")
-        );
+                (Double) o.get("longitude"),
+                (String) o.get("adresse")
+
+                );
     }
 
     public static Restaurant RestaurantAdapterDetails(ParseObject o, int nbEtoiles) {
@@ -40,12 +42,13 @@ public class Restaurant {
         );
     }
 
-    public Restaurant(String objectId, String nom, int nbEtoiles, Double latitude, Double longitude) {
+    public Restaurant(String objectId, String nom, int nbEtoiles, Double latitude, Double longitude, String adresse) {
         this.objectId = objectId;
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
         if (latitude != null && longitude != null )
             this.position = new GeoPoint(latitude, longitude);
+        this.adresse = adresse;
     }
     public Restaurant(String nom, int nbEtoiles) {
         this.nom = nom;
