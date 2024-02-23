@@ -22,7 +22,7 @@ public class RestoPlaceholder {
                 "\n" +
                 "Et voluptatem iure et dolorum iste in reiciendis quia sed assumenda suscipit id aperiam natus. Et perferendis labore ut dolores laudantium eos voluptate minima.\n" +
                 "\n" +
-                "Qui beatae iusto ab dolores fugit non temporibus quibusdam ut facilis illum cum eveniet doloribus quo repellat nesciunt qui voluptate doloremque? Ab unde minima et cupiditate voluptatibus et voluptas aliquam.\n");
-
+                "Qui beatae iusto ab dolores fugit non temporibus quibusdam ut facilis illum cum eveniet doloribus quo repellat nesciunt qui voluptate doloremque? Ab unde minima et cupiditate voluptatibus et voluptas aliquam.\n",
+                null);
     }
 }

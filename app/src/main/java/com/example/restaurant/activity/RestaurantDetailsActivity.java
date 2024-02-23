@@ -28,8 +28,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.restaurantDescription)).setText(resto.getDescription() + "\n" +  resto.getAdresse());
         ((TextView) findViewById(R.id.restaurantName)).setText(resto.getNom());
-
-        ((ImageView) findViewById(R.id.imageView)).setImageResource(R.drawable.restaurant_placeholder);
+        setDetailsImage(resto);
 
         // Get number of stars
         int stars = Math.round(resto.getNbEtoiles());
@@ -42,6 +41,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.stars)).setText(displayedStars);
     }
 
+    private void setDetailsImage(Restaurant resto) {
+        if (resto.getImage() != null) {
+            ((ImageView) findViewById(R.id.imageView)).setImageBitmap(resto.getImage());
+        }
+        else
+            ((ImageView) findViewById(R.id.imageView)).setImageResource(R.drawable.restaurant_placeholder);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -51,7 +58,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_map) {
+        if (item.getItemId() == R.id.menu_list_resto) {
             Intent intentMain = new Intent(RestaurantDetailsActivity.this , MainActivity.class);
             RestaurantDetailsActivity.this.startActivity(intentMain);
             return true;

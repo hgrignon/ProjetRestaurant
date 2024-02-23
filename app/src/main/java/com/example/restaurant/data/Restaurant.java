@@ -1,5 +1,10 @@
 package com.example.restaurant.data;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import org.osmdroid.util.GeoPoint;
@@ -18,6 +23,7 @@ public class Restaurant {
 
     GeoPoint position;
 
+    Bitmap image;
     //Image;
     //Menu
 
@@ -38,7 +44,8 @@ public class Restaurant {
                 (String) o.get("nom"),
                 nbEtoiles,
                 (String) o.get("adresse"),
-                (String) o.get("description")
+                (String) o.get("description"),
+                (ParseFile) o.get("image")
         );
     }
 
@@ -54,11 +61,12 @@ public class Restaurant {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
     }
-    public Restaurant(String nom, int nbEtoiles, String adresse, String description) {
+    public Restaurant(String nom, int nbEtoiles, String adresse, String description, ParseFile image) {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
         this.adresse = adresse;
         this.description = description;
+        this.setImage(image);
     }
 
     public String getObjectId() {
@@ -83,5 +91,19 @@ public class Restaurant {
 
     public GeoPoint getPosition() {
         return position;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    private void setImage(ParseFile image) {
+        if (image != null ) {
+            try {
+                this.image = BitmapFactory.decodeByteArray(image.getData(), 0, image.getData().length);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
