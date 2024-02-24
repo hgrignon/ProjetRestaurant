@@ -9,21 +9,22 @@
         android:id="@+id/textView2"
         android:layout_width="163dp"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Laissez votre avis :"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/TitreAvis"
-        android:layout_width="362dp"
-        android:layout_height="63dp"
-        android:layout_marginTop="8dp"
+        android:id="@+id/AuteurAvis"
+        android:layout_width="194dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="text"
         android:text="Auteur"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -38,7 +39,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitreAvis" />
+        app:layout_constraintTop_toBottomOf="@+id/AuteurAvis" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barriere"
@@ -70,5 +71,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AvisDescription"
         app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/NombreAvis"
+        android:layout_width="63dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="200dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.899"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.09" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
