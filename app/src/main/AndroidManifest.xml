@@ -46,6 +46,11 @@
 
         <activity
             android:name=".activity.RestaurantDetailsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity
+            android:name=".activity.ReviewActivity"
             android:exported="false" />
 
     </application>
