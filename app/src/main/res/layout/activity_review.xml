@@ -64,26 +64,40 @@
 
     <EditText
         android:id="@+id/NombreAvis"
-        android:layout_width="63dp"
-        android:layout_height="43dp"
+        android:layout_width="62dp"
+        android:layout_height="56dp"
         android:layout_marginBottom="200dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.899"
+        app:layout_constraintHorizontal_bias="0.931"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.108" />
+        app:layout_constraintVertical_bias="0.111" />
 
     <ListView
         android:id="@+id/ListeAvis"
-        android:layout_width="412dp"
-        android:layout_height="407dp"
+        android:layout_width="410dp"
+        android:layout_height="284dp"
+        android:layout_marginTop="114dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AvisDescription"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="108dp"
+        android:layout_height="28dp"
+        android:text="Tout les avis : "
+        app:layout_constraintBottom_toBottomOf="@+id/ListeAvis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.079"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/envoiAvis"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

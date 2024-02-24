@@ -2,14 +2,13 @@ package com.example.restaurant.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.restaurant.R;
-import com.example.restaurant.activity.adapter.RestaurantAdapter;
 import com.example.restaurant.activity.adapter.ReviewAdapter;
-import com.example.restaurant.data.Restaurant;
 import com.example.restaurant.data.Review;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
@@ -22,6 +21,7 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_review);
         String id = getIntent().getStringExtra("idRestaurant");
 

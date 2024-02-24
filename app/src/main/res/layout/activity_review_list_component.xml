@@ -5,7 +5,7 @@
     android:id="@+id/nombreEtoile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:maxHeight="250px">
+    android:maxHeight="200px">
 
     <TextView
         android:id="@+id/auteur"
@@ -14,22 +14,23 @@
         android:text="Auteur"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.026" />
+        app:layout_constraintVertical_bias="0.14" />
 
     <TextView
         android:id="@+id/Avis"
-        android:layout_width="419dp"
-        android:layout_height="64dp"
+        android:layout_width="1005dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="9dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.967" />
+        app:layout_constraintTop_toBottomOf="@+id/auteur"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/nombreEtoileAvis"

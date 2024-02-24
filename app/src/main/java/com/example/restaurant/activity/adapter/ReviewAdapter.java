@@ -50,7 +50,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         final Review review = getItem(position);
 
         holder.auteur.setText(review.getAuteur());
-        holder.nombreEtoile.setText("5");
+        holder.nombreEtoile.setText(String.valueOf(review.getNbEtoiles()));
         holder.avis.setText(review.getAvis());
         return convertView;
     }
