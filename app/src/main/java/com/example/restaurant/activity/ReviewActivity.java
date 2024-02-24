@@ -3,12 +3,18 @@ package com.example.restaurant.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.restaurant.R;
+import com.example.restaurant.activity.adapter.RestaurantAdapter;
+import com.example.restaurant.activity.adapter.ReviewAdapter;
+import com.example.restaurant.data.Restaurant;
 import com.example.restaurant.data.Review;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
+
+import java.util.ArrayList;
 
 public class ReviewActivity extends AppCompatActivity {
 
@@ -18,6 +24,11 @@ public class ReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
         String id = getIntent().getStringExtra("idRestaurant");
+
+        ListView listReview = (ListView) findViewById(R.id.ListeAvis);
+        ArrayList<Review> reviews = restaurantServices.parseReviews(id);
+        ReviewAdapter adapter = new ReviewAdapter(this, reviews);
+        listReview.setAdapter(adapter);
         findViewById(R.id.envoiAvis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -67,7 +67,7 @@ public class RestaurantServicesImpl implements RestaurantServices {
         return (int) (average / reviews.size());
     }
 
-    private ArrayList<Review> parseReviews(String restaurantId) {
+    public ArrayList<Review> parseReviews(String restaurantId) {
         ArrayList<Review> reviews = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
