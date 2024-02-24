@@ -1,10 +1,12 @@
 package com.example.restaurant.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +18,12 @@ import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 
 public class RestaurantDetailsActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context = this;
+
         setContentView(R.layout.restaurant_details);
 
         RestaurantServices services = new RestaurantServicesImpl();
@@ -39,6 +44,14 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             else displayedStars += "★";
         }
         ((TextView) findViewById(R.id.stars)).setText(displayedStars);
+        findViewById(R.id.stars).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ReviewActivity.class);
+                RestaurantDetailsActivity.this.startActivity(intent);
+            }
+        });
+
     }
 
     private void setDetailsImage(Restaurant resto) {
