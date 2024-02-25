@@ -1,16 +1,11 @@
 package com.example.restaurant.activity;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.restaurant.R;
-
-import java.io.IOException;
 
 public class FiltreActivity extends AppCompatActivity {
     @Override
@@ -18,11 +13,13 @@ public class FiltreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtre);
 
-        Uri photoUri = getIntent().getParcelableExtra(MediaStore.EXTRA_OUTPUT);
-        ImageView image = findViewById(R.id.PhotoPrise);
+        byte[] bytes = getIntent().getByteArrayExtra("image");
 
-        if (photoUri != null) {
-            image.setImageURI(photoUri);
+
+        if (bytes != null) {
+            Bitmap imageBitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+            ImageView imageView = findViewById(R.id.PhotoPrise);
+            imageView.setImageBitmap(imageBitmap);
         }
 
     }
