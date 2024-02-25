@@ -6,6 +6,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.*;
@@ -56,9 +58,9 @@ public class CameraActivity extends AppCompatActivity {
     private TextureView textureView;
     private Context context;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1001;
-    private static final int REQUEST_EXTERNAL_STORAGE = 2;
+    private byte[] bytes=null;
+
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    private Uri photoUri;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -218,44 +220,36 @@ public class CameraActivity extends AppCompatActivity {
 
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-
-            // Créer un fichier pour stocker l'image capturée
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    REQUEST_EXTERNAL_STORAGE);
-
-            File imageFile = createImageFile();
-            // Obtenir l'URI du fichier en utilisant FileProvider
-            photoUri = FileProvider.getUriForFile(context, "com.example.restaurant.fileprovider", imageFile);
-            Log.d("URI ici :",photoUri.getPath());
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
-                    Image image = null;
-                    try {
-                        image = reader.acquireLatestImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        buffer.get(bytes);
-                    } finally {
-                        if (image != null) {
-                            image.close();
-                        }
-                    }
+
                 }
             };
-
             reader.setOnImageAvailableListener(readerListener, backgroundHandler);
 
             final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
+                    Image image = null;
+                    try {
+                        image = reader.acquireLatestImage();
+                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                        bytes = new byte[buffer.capacity()];
+                        Log.d("enorme bite :" ,bytes.toString());
+
+                    } catch (Exception e){
+                        Log.e("erreur : ",e.toString());
+                    }finally {
+                        if (image != null) {
+                            image.close();
+                        }
+                    }
                     // Transférer l'URI du fichier image à FiltreActivity
                     Intent intent = new Intent(context, FiltreActivity.class);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri.getPath());
+                    intent.putExtra("image", bytes);
                     startActivity(intent);
-                    //createCameraPreview();
                 }
             };
 
@@ -276,26 +270,8 @@ public class CameraActivity extends AppCompatActivity {
             }, backgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
-
-    private File createImageFile() throws IOException {
-        // Créer un nom de fichier unique
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-    }
-
-
-
-
     @Override
     protected void onPause() {
         super.onPause();
