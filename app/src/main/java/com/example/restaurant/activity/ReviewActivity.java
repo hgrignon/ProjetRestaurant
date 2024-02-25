@@ -1,5 +1,7 @@
 package com.example.restaurant.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +23,7 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context = this;
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_review);
         String id = getIntent().getStringExtra("idRestaurant");
@@ -29,6 +32,15 @@ public class ReviewActivity extends AppCompatActivity {
         ArrayList<Review> reviews = restaurantServices.parseReviews(id);
         ReviewAdapter adapter = new ReviewAdapter(this, reviews);
         listReview.setAdapter(adapter);
+
+        findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CameraActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
         findViewById(R.id.envoiAvis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
