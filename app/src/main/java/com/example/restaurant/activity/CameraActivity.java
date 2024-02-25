@@ -8,10 +8,12 @@ import android.hardware.camera2.*;
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.TextureView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
 import com.example.restaurant.R;
 
 
@@ -26,6 +28,7 @@ public class CameraActivity extends AppCompatActivity {
     private CaptureRequest.Builder captureRequestBuilder;
 
     private TextureView textureView;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +65,26 @@ public class CameraActivity extends AppCompatActivity {
         try {
             cameraId = cameraManager.getCameraIdList()[0];
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Demander la permission à l'utilisateur
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
                 return;
             }
             cameraManager.openCamera(cameraId, stateCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    // Gérer la réponse de l'utilisateur à la demande de permission
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this, "Permission de la caméra refusée", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
