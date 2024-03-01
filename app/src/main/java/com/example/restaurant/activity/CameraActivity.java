@@ -162,15 +162,39 @@ public class CameraActivity extends AppCompatActivity {
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                REQUEST_STORAGE_PERMISSION);
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_STORAGE_READ_PERMISSION);
+    private void requestStoragePermissions() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
+            new AlertDialog.Builder(CameraActivity.this)
+                    .setMessage("request permission")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(CameraActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    REQUEST_STORAGE_PERMISSION);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                    .create()
+                    .show();
+
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_STORAGE_PERMISSION);
+        }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -188,7 +212,7 @@ public class CameraActivity extends AppCompatActivity {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+        if (requestCode == REQUEST_STORAGE_READ_PERMISSION) {
             if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(CameraActivity.this, "ERROR: Storage permissions not granted", Toast.LENGTH_LONG).show();
             }
@@ -371,12 +395,12 @@ public class CameraActivity extends AppCompatActivity {
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
+            requestStoragePermissions();
             return;
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestStoragePermission();
+            requestStoragePermissions();
             return;
         }
 
@@ -540,8 +564,6 @@ public class CameraActivity extends AppCompatActivity {
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
                     Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
-                    String destPath = context.getExternalFilesDir(null).getAbsolutePath();
-                    final File file = new File(destPath+ "/Pictures/pic.jpg");
 
                     final Intent intent = new Intent(CameraActivity.this, FiltreActivity.class);
                     intent.putExtra("imagePath", Uri.fromFile(file).toString());
