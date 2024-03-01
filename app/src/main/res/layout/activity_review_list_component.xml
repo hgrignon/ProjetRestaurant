@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nombreEtoile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:maxHeight="200px">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/auteur"
@@ -21,16 +20,15 @@
 
     <TextView
         android:id="@+id/Avis"
-        android:layout_width="1005dp"
-        android:layout_height="45dp"
+        android:layout_width="405dp"
+        android:layout_height="40dp"
         android:layout_marginTop="9dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/auteur"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/nombreEtoileAvis"
