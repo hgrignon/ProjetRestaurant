@@ -49,6 +49,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.6")
     implementation("androidx.navigation:navigation-ui:2.7.6")
     implementation("com.burhanrashid52:photoeditor:3.0.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     testImplementation("junit:junit:4.13.2")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")

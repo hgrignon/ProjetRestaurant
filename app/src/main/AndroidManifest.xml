@@ -63,6 +63,9 @@
         <activity
             android:name=".activity.FiltreActivity"
             android:exported="false"/>
+        <activity
+            android:name=".activity.PhotoEditorActivity"
+            android:exported="false"/>
 
     </application>
 
