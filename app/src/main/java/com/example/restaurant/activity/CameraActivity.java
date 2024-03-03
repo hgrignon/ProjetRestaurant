@@ -73,6 +73,7 @@ public class CameraActivity extends AppCompatActivity {
     private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_STORAGE_PERMISSION = 2;
+    private String id;
 
     private Context context;
 
@@ -569,7 +570,8 @@ public class CameraActivity extends AppCompatActivity {
 
                     final Intent intent = new Intent(CameraActivity.this, ReviewActivity.class); // a changer quand les filtres seront fini
                     intent.putExtra("imagePath", Uri.fromFile(file).toString());
-                    startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             };
 

@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,24 +52,14 @@ public class ReviewActivity extends AppCompatActivity {
         ReviewAdapter adapter = new ReviewAdapter(this, reviews);
         listReview.setAdapter(adapter);
 
-        Bundle extras = getIntent().getExtras();
-        if(extras.containsKey("imagePath")) {
-            String path = getIntent().getStringExtra("imagePath");
-            Uri uri = Uri.parse(path);
-            listImage.add(uri);
-        }
-        RecyclerView imageListView = (RecyclerView) findViewById(R.id.Gallery);
-        GalleryAdapter galleryAdapter = new GalleryAdapter(this, listImage);
-        imageListView.setAdapter(galleryAdapter);
 
-        LinearLayoutManager layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
-        imageListView.setLayoutManager(layoutManager);
+
         findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, CameraActivity.class);
-                context.startActivity(intent);
-            }
+                intent.putExtra("restauId", id);
+                launchCameraActivity(intent);            }
         });
 
         findViewById(R.id.envoiAvis).setOnClickListener(new View.OnClickListener() {
@@ -83,7 +77,7 @@ public class ReviewActivity extends AppCompatActivity {
 
                 if(!auteur.isEmpty() && !avis.isEmpty() && !nb.isEmpty()){
                     int nombre = Integer.valueOf(numberId.getText().toString());
-                    Review review = new Review(id,auteur,nombre,avis);
+                    Review review = new Review(id,auteur,nombre,avis,getImagesFromURI(listImage)); //a changer
                     restaurantServices.addReview(review);
                     auteurId.setText("");
                     avisId.setText("");
@@ -93,6 +87,42 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
+
+    public ArrayList<byte[]> getImagesFromURI(ArrayList<Uri> listImage){
+        ArrayList<byte[]> listByteImage = new ArrayList<>();
+        for(Uri uri : listImage){
+        }
+        return listByteImage;
+    }
+
+    private ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Bundle extras = result.getData().getExtras();
+                        if (extras != null && extras.containsKey("imagePath")) {
+                            String path = extras.getString("imagePath");
+                            Uri uri = Uri.parse(path);
+                            listImage.add(uri);
+
+                            // Update RecyclerView with the new image
+                            RecyclerView imageListView = findViewById(R.id.Gallery);
+                            GalleryAdapter galleryAdapter = new GalleryAdapter(context, listImage);
+                            imageListView.setAdapter(galleryAdapter);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+                            imageListView.setLayoutManager(layoutManager);
+                            Log.d("liste liste", listImage.toString());
+                        }
+                    }
+                }
+            });
+
+    // Call this method when you want to start the activity
+    private void launchCameraActivity(Intent intent) {
+        startActivityIntent.launch(intent);
+    }
+
 }
