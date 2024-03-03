@@ -41,6 +41,14 @@ public class ReviewActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.photoeditor).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PhotoEditorActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
         findViewById(R.id.envoiAvis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
