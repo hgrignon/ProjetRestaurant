@@ -2,15 +2,12 @@ package com.example.restaurant.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,10 +27,8 @@ import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class ReviewActivity extends AppCompatActivity {
@@ -133,7 +128,7 @@ public class ReviewActivity extends AppCompatActivity {
                             listImage.add(uri);
 
                             // Update RecyclerView with the new image
-                            RecyclerView imageListView = findViewById(R.id.Gallery);
+                            RecyclerView imageListView = findViewById(R.id.GalleryPhotoInComm);
                             GalleryAdapter galleryAdapter = new GalleryAdapter(context, listImage);
                             imageListView.setAdapter(galleryAdapter);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
