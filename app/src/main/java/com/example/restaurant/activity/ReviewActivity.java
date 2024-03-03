@@ -29,7 +29,10 @@ import com.example.restaurant.data.Review;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -77,11 +80,17 @@ public class ReviewActivity extends AppCompatActivity {
 
                 if(!auteur.isEmpty() && !avis.isEmpty() && !nb.isEmpty()){
                     int nombre = Integer.valueOf(numberId.getText().toString());
-                    Review review = new Review(id,auteur,nombre,avis,getImagesFromURI(listImage)); //a changer
+                    Review review = null;
+                    try {
+                        review = new Review(id,auteur,nombre,avis,getImagesFromURI(listImage));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     restaurantServices.addReview(review);
                     auteurId.setText("");
                     avisId.setText("");
                     numberId.setText("");
+                    listImage.clear();
                 } else {
                     Toast.makeText(context,"remplissez tout les champs", Toast.LENGTH_SHORT).show();
                 }
@@ -89,11 +98,26 @@ public class ReviewActivity extends AppCompatActivity {
         });
     }
 
-    public ArrayList<byte[]> getImagesFromURI(ArrayList<Uri> listImage){
+    public ArrayList<byte[]> getImagesFromURI(ArrayList<Uri> listImage) throws IOException {
         ArrayList<byte[]> listByteImage = new ArrayList<>();
         for(Uri uri : listImage){
+            InputStream iStream =   getContentResolver().openInputStream(uri);
+            byte[] inputData = getBytes(iStream);
+            listByteImage.add(inputData);
         }
         return listByteImage;
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
     private ActivityResultLauncher<Intent> startActivityIntent = registerForActivityResult(
