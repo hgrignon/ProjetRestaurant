@@ -34,12 +34,13 @@
         android:id="@+id/AvisDescription"
         android:layout_width="363dp"
         android:layout_height="150dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="104dp"
         android:contentDescription="Donnez votre avis"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AuteurAvis" />
 
@@ -57,10 +58,10 @@
         android:text="Envoyer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AvisDescription"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.02" />
 
     <EditText
         android:id="@+id/NombreAvis"
@@ -71,21 +72,20 @@
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.111" />
+        app:layout_constraintVertical_bias="0.105" />
 
     <ListView
         android:id="@+id/ListeAvis"
-        android:layout_width="410dp"
-        android:layout_height="284dp"
-        android:layout_marginTop="114dp"
+        android:layout_width="438dp"
+        android:layout_height="308dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/envoiAvis"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -95,10 +95,10 @@
         android:text="Tout les avis : "
         app:layout_constraintBottom_toBottomOf="@+id/ListeAvis"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.079"
+        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/envoiAvis"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.024" />
 
     <Button
         android:id="@+id/camera"
@@ -108,9 +108,24 @@
         android:text="camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.925"
+        app:layout_constraintHorizontal_bias="0.946"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.268" />
+        app:layout_constraintTop_toBottomOf="@+id/NombreAvis"
+        app:layout_constraintVertical_bias="0.051" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Gallery"
+        android:layout_width="240dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="32dp"
+        android:animationDuration="2000"
+        android:padding="10dp"
+        android:spacing="5dp"
+        android:unselectedAlpha="50"
+        app:layout_constraintBottom_toTopOf="@+id/AvisDescription"
+        app:layout_constraintEnd_toStartOf="@+id/camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AuteurAvis" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

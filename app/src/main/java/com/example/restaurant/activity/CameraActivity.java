@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -521,8 +523,8 @@ public class CameraActivity extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation,manager,mCameraId));
-
-            File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/pic.jpg");
+            String timeStamp = DateFormat.format("yyyyMMdd_HHmmss", new Date()).toString();
+            File file = new File(Environment.getExternalStorageDirectory() + "/Pictures/pic_" + timeStamp+ ".jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -565,7 +567,7 @@ public class CameraActivity extends AppCompatActivity {
                     super.onCaptureCompleted(session, request, result);
                     Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
 
-                    final Intent intent = new Intent(CameraActivity.this, FiltreActivity.class);
+                    final Intent intent = new Intent(CameraActivity.this, ReviewActivity.class); // a changer quand les filtres seront fini
                     intent.putExtra("imagePath", Uri.fromFile(file).toString());
                     startActivity(intent);
                 }
