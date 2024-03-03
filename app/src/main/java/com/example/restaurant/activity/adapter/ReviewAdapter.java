@@ -1,23 +1,19 @@
 package com.example.restaurant.activity.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+//import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.restaurant.R;
-import com.example.restaurant.data.Restaurant;
 import com.example.restaurant.data.Review;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class ReviewAdapter extends ArrayAdapter<Review> {
@@ -65,6 +61,15 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         holder.avis.setText(review.getAvis());
         holder.images.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.images.setAdapter(galleryAdapter);
+     /*   final ImagePopup imagePopup = new ImagePopup(mContext);
+        holder.images.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagePopup.initiatePopup(imagePopup.getDrawable());
+            }
+        });
+*/
+
         return convertView;
     }
 

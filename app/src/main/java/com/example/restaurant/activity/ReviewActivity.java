@@ -128,7 +128,7 @@ public class ReviewActivity extends AppCompatActivity {
                             listImage.add(uri);
 
                             // Update RecyclerView with the new image
-                            RecyclerView imageListView = findViewById(R.id.GalleryPhotoInComm);
+                            RecyclerView imageListView = findViewById(R.id.GalleryPhotoInReview);
                             GalleryAdapter galleryAdapter = new GalleryAdapter(context, listImage);
                             imageListView.setAdapter(galleryAdapter);
                             LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
