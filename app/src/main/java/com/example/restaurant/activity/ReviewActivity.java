@@ -42,7 +42,7 @@ public class ReviewActivity extends AppCompatActivity {
                 int nombre = Integer.valueOf(numberId.getText().toString());
 
                 if(!auteur.isEmpty() && !avis.isEmpty() && nombre>0 && nombre<=5){
-                    Review review = new Review(id,auteur,nombre,avis);
+                    Review review = new Review(id,auteur,nombre,avis, null);
                     restaurantServices.addReview(review);
                     auteurId.setText("");
                     avisId.setText("");
