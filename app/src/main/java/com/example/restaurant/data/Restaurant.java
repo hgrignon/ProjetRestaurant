@@ -9,6 +9,9 @@ import com.parse.ParseObject;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Restaurant {
     String objectId;
     String nom;
@@ -27,6 +30,9 @@ public class Restaurant {
     //Image;
     //Menu
 
+    public final static Collection<String> RestaurantListView = Arrays.asList("objectId", "nom", "latitude", "longitude", "adresse");
+    public final static Collection<String> RestaurantDetailsView = Arrays.asList("objectId", "nom", "adresse", "description", "image");
+
     public static Restaurant RestaurantAdapterList(ParseObject o, int nbEtoiles) {
         return new Restaurant(
                 (String) o.getObjectId(),
@@ -35,7 +41,6 @@ public class Restaurant {
                 (Double) o.get("latitude"),
                 (Double) o.get("longitude"),
                 (String) o.get("adresse")
-
                 );
     }
 

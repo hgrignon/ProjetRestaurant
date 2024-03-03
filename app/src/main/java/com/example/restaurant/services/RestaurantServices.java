@@ -12,5 +12,5 @@ public interface RestaurantServices {
 
     void addReview(Review review);
 
-    ArrayList<Review> parseReviews(String id);
+    ArrayList<Review> parseReviews(String restaurantId);
 }

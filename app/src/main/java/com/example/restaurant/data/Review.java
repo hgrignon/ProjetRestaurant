@@ -2,27 +2,40 @@ package com.example.restaurant.data;
 
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Review {
     String restaurantId;
     String auteur;
     int nbEtoiles;
     String avis;
-    // Photos
+    ArrayList<byte[]> pictures;
+
+    public final static Collection<String> ReviewListView = Arrays.asList("restaurantId", "auteur", "nbEtoiles", "avis", "pictures");
+    public final static Collection<String> ReviewStarsNumberView = Arrays.asList("restaurantId", "nbEtoiles");
 
     public static Review ReviewAdapter(ParseObject o) {
         return new Review(
                 (String) o.get("restaurantId"),
                 (String) o.get("auteur"),
                 (int) o.get("nbEtoiles"),
-                (String) o.get("avis")
+                (String) o.get("avis"),
+                (ArrayList<byte[]>) o.get("pictures")
         );
     }
 
-    public Review(String restaurantId,String auteur, int nbEtoiles, String avis) {
+    public static int ReviewStarsAdapter(ParseObject o) {
+        return (int) o.get("nbEtoiles");
+    }
+
+    public Review(String restaurantId,String auteur, int nbEtoiles, String avis, ArrayList<byte[]> pictures) {
         this.restaurantId = restaurantId;
         this.auteur = auteur;
         this.nbEtoiles = nbEtoiles;
         this.avis = avis;
+        this.pictures = pictures;
     }
 
     public String getRestaurantId() {
@@ -56,4 +69,9 @@ public class Review {
     public void setAvis(String avis) {
         this.avis = avis;
     }
+
+    public ArrayList<byte[]> getPictures() {
+        return pictures;
+    }
+
 }
