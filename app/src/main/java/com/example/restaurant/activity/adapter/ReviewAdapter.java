@@ -57,7 +57,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         GalleryAdapterForComm galleryAdapter = new GalleryAdapterForComm(mContext,listImages);
 
         holder.auteur.setText(review.getAuteur());
-        holder.nombreEtoile.setText(String.valueOf(review.getNbEtoiles()));
+        holder.nombreEtoile.setText(String.valueOf(review.getNbEtoiles()) + "/5");
         holder.avis.setText(review.getAvis());
         holder.images.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         holder.images.setAdapter(galleryAdapter);

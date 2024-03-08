@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.restaurant.R;
@@ -27,7 +28,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant> {
     private static class ViewHolder {
         TextView titreRestau;
         TextView adresse;
-        Button button2;
+        ImageButton button2;
     }
 
     @Override
