@@ -11,8 +11,12 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restaurant.R;
+import com.example.restaurant.activity.adapter.EditingToolsAdapter;
+import com.example.restaurant.enums.ToolType;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 
@@ -21,13 +25,14 @@ import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.ViewType;
 
-public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, View.OnClickListener {
+public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
     View mTxtCurrentTool;
-    View mRvTools;
+    RecyclerView mRvTools;
     View mRvFilters;
+    EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,10 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         setContentView(R.layout.activity_stickers);
 
         initViews();
+
+        LinearLayoutManager llmTools = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRvTools.setLayoutManager(llmTools);
+        mRvTools.setAdapter(mEditingToolsAdapter);
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
         mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
@@ -150,6 +159,11 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
               //  Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 //break;
+
+    }
+
+    @Override
+    public void onToolSelected(ToolType toolType) {
 
     }
 }
