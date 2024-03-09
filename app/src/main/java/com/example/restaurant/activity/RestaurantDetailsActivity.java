@@ -44,6 +44,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             else displayedStars += "★";
         }
         ((TextView) findViewById(R.id.stars)).setText(displayedStars);
+
+        setupReservationButton(id);
+
         findViewById(R.id.stars).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,12 +58,22 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
     }
 
+
     private void setDetailsImage(Restaurant resto) {
         if (resto.getImage() != null) {
             ((ImageView) findViewById(R.id.imageView)).setImageBitmap(resto.getImage());
         }
         else
             ((ImageView) findViewById(R.id.imageView)).setImageResource(R.drawable.restaurant_placeholder);
+    }
+
+    private void setupReservationButton(String restaurantId) {
+        (findViewById(R.id.button)).setOnClickListener(a -> {
+            Intent intentMain = new Intent(this, ReservationActivity.class);
+            intentMain.putExtra("restaurantId", restaurantId);
+            startActivity(intentMain);
+        });
+
     }
 
     @Override

@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation("com.wdullaer:materialdatetimepicker:4.2.3")
     implementation("com.github.parse-community.Parse-SDK-Android:parse:4.0.0")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
     implementation("androidx.core:core-ktx:1.12.0")

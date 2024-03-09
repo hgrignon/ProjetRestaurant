@@ -30,8 +30,10 @@ public class Restaurant {
     //Image;
     //Menu
 
+    int capacity;
+
     public final static Collection<String> RestaurantListView = Arrays.asList("objectId", "nom", "latitude", "longitude", "adresse");
-    public final static Collection<String> RestaurantDetailsView = Arrays.asList("objectId", "nom", "adresse", "description", "image");
+    public final static Collection<String> RestaurantDetailsView = Arrays.asList("objectId", "nom", "adresse", "description", "image", "capacity");
 
     public static Restaurant RestaurantAdapterList(ParseObject o, int nbEtoiles) {
         return new Restaurant(
@@ -50,7 +52,8 @@ public class Restaurant {
                 nbEtoiles,
                 (String) o.get("adresse"),
                 (String) o.get("description"),
-                (ParseFile) o.get("image")
+                (ParseFile) o.get("image"),
+                (int) o.get("capacity")
         );
     }
 
@@ -66,12 +69,13 @@ public class Restaurant {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
     }
-    public Restaurant(String nom, int nbEtoiles, String adresse, String description, ParseFile image) {
+    public Restaurant(String nom, int nbEtoiles, String adresse, String description, ParseFile image, int capacity) {
         this.nom = nom;
         this.nbEtoiles = nbEtoiles;
         this.adresse = adresse;
         this.description = description;
         this.setImage(image);
+        this.capacity = capacity;
     }
 
     public String getObjectId() {
@@ -110,5 +114,9 @@ public class Restaurant {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

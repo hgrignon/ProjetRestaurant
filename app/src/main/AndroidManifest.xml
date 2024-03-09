@@ -43,12 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MapActivity"
             android:exported="false" />
-
-
         <activity
             android:name=".activity.RestaurantDetailsActivity"
             android:exported="false"
@@ -56,6 +53,9 @@
 
         <activity
             android:name=".activity.ReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ReservationActivity"
             android:exported="false" />
         <activity
             android:name=".activity.CameraActivity"
