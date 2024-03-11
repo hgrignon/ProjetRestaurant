@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,20 +20,25 @@ import com.example.restaurant.activity.adapter.EditingToolsAdapter;
 import com.example.restaurant.enums.ToolType;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.ViewType;
+import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
+import ja.burhanrashid52.photoeditor.shape.ShapeType;
 
-public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
+public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
-    View mTxtCurrentTool;
+    TextView mTxtCurrentTool;
     RecyclerView mRvTools;
     View mRvFilters;
     EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
+    ShapeBuilder mShapeBuilder;
+    ShapeBSFragment mShapeBSFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         Typeface mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
         //Typeface mEmojiTypeFace = Typeface.createFromAsset(getAssets(), "font/emojione-android.ttf");
 
+        mShapeBSFragment = new ShapeBSFragment();
+        mShapeBSFragment.setPropertiesChangeListener(this);
+
         mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
                 .setPinchTextScalable(true)
                 .setClipSourceImage(true)
@@ -58,7 +67,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 //.setDefaultEmojiTypeface(mEmojiTypeFace)
                 .build();
 
+
         mPhotoEditor.setOnPhotoEditorListener(this);
+
 
 
 
@@ -164,6 +175,69 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
     @Override
     public void onToolSelected(ToolType toolType) {
+        switch (toolType) {
+            case SHAPE:
+                mPhotoEditor.setBrushDrawingMode(true);
+                mShapeBuilder = new ShapeBuilder();
+                mPhotoEditor.setShape(mShapeBuilder);
+                mTxtCurrentTool.setText(R.string.label_shape);
+                showBottomSheetDialogFragment(mShapeBSFragment);
+                break;
+            /*case TEXT:
+                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
+                textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
+                    @Override
+                    public void onDone(String inputText, int colorCode) {
+                        mPhotoEditor.addText(inputText, colorCode);
+                        mTxtCurrentTool.setText(R.string.label_text);
+                    }
+                });
+                break;
+            case ERASER:
+                mPhotoEditor.brushEraser();
+                mTxtCurrentTool.setText(R.string.label_eraser);
+                break;
+            case FILTER:
+                mTxtCurrentTool.setText(R.string.label_filter);
+                showFilter(true);
+                break;
+            case EMOJI:
+                mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
+                break;
+            case STICKER:
+                mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
+                break;*/
+        }
 
+    }
+
+    private void showBottomSheetDialogFragment(BottomSheetDialogFragment fragment) {
+        if (fragment == null || fragment.isAdded()) {
+            return;
+        }
+        fragment.show(getSupportFragmentManager(), fragment.getTag());
+    }
+
+    @Override
+    public void onColorChanged(int colorCode) {
+        mPhotoEditor.setShape(mShapeBuilder.withShapeColor(colorCode));
+        mTxtCurrentTool.setText(R.string.label_brush);
+    }
+
+    @Override
+    public void onOpacityChanged(int opacity) {
+        mPhotoEditor.setShape(mShapeBuilder.withShapeOpacity(opacity));
+        mTxtCurrentTool.setText(R.string.label_brush);
+    }
+
+    @Override
+    public void onShapeSizeChanged(int shapeSize) {
+        mPhotoEditor.setShape(mShapeBuilder.withShapeSize((float) shapeSize));
+        mTxtCurrentTool.setText(R.string.label_brush);
+    }
+
+    @Override
+    public void onShapePicked(ShapeType shapeType) {
+        mPhotoEditor.setShape(mShapeBuilder.withShapeType(shapeType));
     }
 }
