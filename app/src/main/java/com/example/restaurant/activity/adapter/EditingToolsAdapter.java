@@ -17,7 +17,7 @@ import java.util.List;
 
 public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapter.ViewHolder> {
     private final OnItemSelected mOnItemSelected;
-    private final List<ToolModel> mToolList;
+    private final List<ToolModel> mToolList = new ArrayList<>();
 
     public interface OnItemSelected {
         void onToolSelected(ToolType toolType);
@@ -25,8 +25,6 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
 
     public EditingToolsAdapter(OnItemSelected onItemSelected) {
         mOnItemSelected = onItemSelected;
-        mToolList = new ArrayList<>();
-
         mToolList.add(new ToolModel("Shape", R.drawable.ic_oval, ToolType.SHAPE));
         mToolList.add(new ToolModel("Text", R.drawable.ic_text, ToolType.TEXT));
         mToolList.add(new ToolModel("Eraser", R.drawable.ic_eraser, ToolType.ERASER));
@@ -46,8 +44,8 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToolModel item = mToolList.get(position);
-        holder.txtTool.setText(item.getToolName());
-        holder.imgToolIcon.setImageResource(item.getToolIcon());
+        holder.txtTool.setText(item.mToolName);
+        holder.imgToolIcon.setImageResource(item.mToolIcon);
     }
 
     @Override
@@ -55,21 +53,15 @@ public class EditingToolsAdapter extends RecyclerView.Adapter<EditingToolsAdapte
         return mToolList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imgToolIcon;
-        private final TextView txtTool;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgToolIcon;
+        TextView txtTool;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             imgToolIcon = itemView.findViewById(R.id.imgToolIcon);
             txtTool = itemView.findViewById(R.id.txtTool);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnItemSelected.onToolSelected(mToolList.get(getLayoutPosition()).getToolType());
-                }
-            });
+            itemView.setOnClickListener(v -> mOnItemSelected.onToolSelected(mToolList.get(getLayoutPosition()).mToolType));
         }
     }
 
