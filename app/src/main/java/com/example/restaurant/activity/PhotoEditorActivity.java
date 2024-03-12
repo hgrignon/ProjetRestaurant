@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.Manifest;
@@ -23,12 +24,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.lifecycle.*;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
 
 import com.example.restaurant.R;
 import com.example.restaurant.activity.adapter.EditingToolsAdapter;
@@ -45,6 +52,7 @@ import java.io.IOException;
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
+import ja.burhanrashid52.photoeditor.PhotoFilter;
 import ja.burhanrashid52.photoeditor.SaveFileResult;
 import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.ViewType;
@@ -52,31 +60,40 @@ import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
 import kotlinx.coroutines.CoroutineScope;
 
-public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
+public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, FilterListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     public static final int READ_WRITE_STORAGE = 52;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
     TextView mTxtCurrentTool;
     RecyclerView mRvTools;
-    View mRvFilters;
+    RecyclerView mRvFilters;
     EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
     ShapeBuilder mShapeBuilder;
     ShapeBSFragment mShapeBSFragment;
     StickerBSFragment mStickerBSFragment;
+    boolean mIsFilterVisible = false;
     FileSaveHelper mSaveFileHelper;
     ProgressDialog mProgressDialog = null;
+    ConstraintSet mConstraintSet = new ConstraintSet();
+    ConstraintLayout mRootView;
+    FilterViewAdapter mFilterViewAdapter = new FilterViewAdapter(this);
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stickers);
+        setContentView(R.layout.activity_edit_image);
 
         initViews();
 
         LinearLayoutManager llmTools = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRvTools.setLayoutManager(llmTools);
         mRvTools.setAdapter(mEditingToolsAdapter);
+
+        LinearLayoutManager llmFilters = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mRvFilters.setLayoutManager(llmFilters);
+        mRvFilters.setAdapter(mFilterViewAdapter);
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
         mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
@@ -101,21 +118,6 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         mPhotoEditor.setOnPhotoEditorListener(this);
         mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
         mSaveFileHelper = new FileSaveHelper(this);
-
-
-
-
-       /* mPhotoEditor.saveAsFile(filePath, new PhotoEditor.OnSaveListener() {
-            @Override
-            public void onSuccess(@NonNull String imagePath) {
-                Log.e("PhotoEditor","Image Saved Successfully");
-            }
-
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e("PhotoEditor","Failed to save Image");
-            }
-        }); */
     }
 
     @Override
@@ -153,7 +155,7 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         mTxtCurrentTool = findViewById(R.id.txtCurrentTool);
         mRvTools = findViewById(R.id.rvConstraintTools);
         mRvFilters = findViewById(R.id.rvFilterView);
-        //mRootView = findViewById(R.id.rootView);
+        mRootView = findViewById(R.id.rootView);
 
         ImageView imgUndo = findViewById(R.id.imgUndo);
         imgUndo.setOnClickListener(this);
@@ -190,17 +192,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         else if(v.getId() == R.id.imgSave){
             saveImage();
         }
-
-
-            //case R.id.imgSave:
-              //  saveImage();
-               // break;
-            //case R.id.imgClose:
-              //  onBackPressed();
-                //break;
-            //case R.id.imgShare:
-              //  shareImage();
-                //break;
+        else if(v.getId() == R.id.imgClose){
+            onBackPressed();
+        }
             //case R.id.imgCamera:
               //  Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -294,13 +288,14 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 mPhotoEditor.brushEraser();
                 mTxtCurrentTool.setText(R.string.label_eraser);
                 break;
+
+            case EMOJI:
+                mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
+                break;*/
             case FILTER:
                 mTxtCurrentTool.setText(R.string.label_filter);
                 showFilter(true);
                 break;
-            case EMOJI:
-                mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
-                break;*/
             case STICKER:
                 mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
                 break;
@@ -355,4 +350,32 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         mProgressDialog.show();
     }
 
+    private void showFilter(boolean isVisible) {
+        mIsFilterVisible = isVisible;
+        mConstraintSet.clone(mRootView);
+
+        int rvFilterId = mRvFilters.getId();
+
+        if (isVisible) {
+            mConstraintSet.clear(rvFilterId, ConstraintSet.START);
+            mConstraintSet.connect(rvFilterId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+            mConstraintSet.connect(rvFilterId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        } else {
+            mConstraintSet.connect(rvFilterId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.END);
+            mConstraintSet.clear(rvFilterId, ConstraintSet.END);
+        }
+
+        ChangeBounds changeBounds = new ChangeBounds();
+        changeBounds.setDuration(350);
+        changeBounds.setInterpolator(new AnticipateOvershootInterpolator(1.0f));
+        TransitionManager.beginDelayedTransition(mRootView, changeBounds);
+
+        mConstraintSet.applyTo(mRootView);
+    }
+
+
+    @Override
+    public void onFilterSelected(PhotoFilter photoFilter) {
+        mPhotoEditor.setFilterEffect(photoFilter);
+    }
 }

@@ -6,7 +6,7 @@
     <string name="back4app_client_key">qAYvjw0zAxVGhRUGZxM1e9NWtK4kAoxB2H0olTn2</string>
 
 
-
+    <string name="label_brush">Brush</string>
     <string name="label_shape">Shape</string>
     <string name="label_oval">Oval</string>
     <string name="label_rectangle">Rectangle</string>
