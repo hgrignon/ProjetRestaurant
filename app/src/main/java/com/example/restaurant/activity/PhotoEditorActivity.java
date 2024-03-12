@@ -1,6 +1,7 @@
 package com.example.restaurant.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
@@ -29,7 +31,7 @@ import ja.burhanrashid52.photoeditor.ViewType;
 import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
 
-public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
+public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
@@ -39,6 +41,7 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     EditingToolsAdapter mEditingToolsAdapter = new EditingToolsAdapter(this);
     ShapeBuilder mShapeBuilder;
     ShapeBSFragment mShapeBSFragment;
+    StickerBSFragment mStickerBSFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
         mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
+
+        mStickerBSFragment = new StickerBSFragment();
+        mStickerBSFragment.setStickerListener(this);
 
         Typeface mTextRobotoTf = ResourcesCompat.getFont(this, R.font.roboto_medium);
         //Typeface mEmojiTypeFace = Typeface.createFromAsset(getAssets(), "font/emojione-android.ttf");
@@ -203,10 +209,10 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 break;
             case EMOJI:
                 mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
-                break;
+                break;*/
             case STICKER:
                 mStickerBSFragment.show(getSupportFragmentManager(), mStickerBSFragment.getTag());
-                break;*/
+                break;
         }
 
     }
@@ -239,5 +245,11 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     @Override
     public void onShapePicked(ShapeType shapeType) {
         mPhotoEditor.setShape(mShapeBuilder.withShapeType(shapeType));
+    }
+
+    @Override
+    public void onStickerClick(Bitmap bitmap) {
+        mPhotoEditor.addImage(bitmap);
+        mTxtCurrentTool.setText(R.string.label_sticker);
     }
 }
