@@ -1,20 +1,34 @@
 package com.example.restaurant.activity;
 
+import android.annotation.SuppressLint;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.Manifest;
+import android.widget.Toast;
 
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.*;
 
 import com.example.restaurant.R;
 import com.example.restaurant.activity.adapter.EditingToolsAdapter;
@@ -22,17 +36,25 @@ import com.example.restaurant.enums.ToolType;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
+
+import java.io.File;
+import java.io.IOException;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
+import ja.burhanrashid52.photoeditor.SaveFileResult;
+import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.ViewType;
 import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
+import kotlinx.coroutines.CoroutineScope;
 
 public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
+    public static final int READ_WRITE_STORAGE = 52;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
     TextView mTxtCurrentTool;
@@ -42,6 +64,8 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     ShapeBuilder mShapeBuilder;
     ShapeBSFragment mShapeBSFragment;
     StickerBSFragment mStickerBSFragment;
+    FileSaveHelper mSaveFileHelper;
+    ProgressDialog mProgressDialog = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +99,8 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
 
         mPhotoEditor.setOnPhotoEditorListener(this);
+        mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
+        mSaveFileHelper = new FileSaveHelper(this);
 
 
 
@@ -161,6 +187,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
             galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_REQUEST);
         }
+        else if(v.getId() == R.id.imgSave){
+            saveImage();
+        }
 
 
             //case R.id.imgSave:
@@ -179,6 +208,68 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
     }
 
+
+    @SuppressLint("MissingPermission")
+    private void saveImage() {
+        if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            showLoading("Saving...");
+            File file = new File(Environment.getExternalStorageDirectory()
+                    + File.separator + ""
+                    + System.currentTimeMillis() + ".png");
+            try {
+                file.createNewFile();
+
+                SaveSettings saveSettings = new SaveSettings.Builder()
+                        .setClearViewsEnabled(true)
+                        .setTransparencyEnabled(true)
+                        .build();
+
+                mPhotoEditor.saveAsFile(file.getAbsolutePath(), saveSettings, new PhotoEditor.OnSaveListener() {
+                    @Override
+                    public void onSuccess(@NonNull String imagePath) {
+                        hideLoading();
+                        showSnackbar("Image Saved Successfully");
+                        mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        hideLoading();
+                        showSnackbar("Failed to save Image");
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                hideLoading();
+                showSnackbar(e.getMessage());
+            }
+        }
+    }
+
+
+    public boolean requestPermission(String permission) {
+        boolean isGranted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+        if (!isGranted) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{permission}, READ_WRITE_STORAGE);
+        }
+        return isGranted;
+    }
+    protected void hideLoading() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    protected void showSnackbar(@NonNull String message) {
+        View view = findViewById(android.R.id.content);
+        if (view != null) {
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
+    }
     @Override
     public void onToolSelected(ToolType toolType) {
         switch (toolType) {
@@ -217,6 +308,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
     }
 
+
+
+
     private void showBottomSheetDialogFragment(BottomSheetDialogFragment fragment) {
         if (fragment == null || fragment.isAdded()) {
             return;
@@ -252,4 +346,13 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         mPhotoEditor.addImage(bitmap);
         mTxtCurrentTool.setText(R.string.label_sticker);
     }
+
+    protected void showLoading(String message) {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage(message);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+
 }
