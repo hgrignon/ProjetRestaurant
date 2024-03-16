@@ -29,6 +29,15 @@ public class GalleryAdapterForComm extends RecyclerView.Adapter<GalleryAdapterFo
 
     private Context mContext;
     private ArrayList<byte[]> mImageList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
 
     public GalleryAdapterForComm(Context context, ArrayList<byte[]> imageList) {
         mContext = context;
@@ -43,12 +52,22 @@ public class GalleryAdapterForComm extends RecyclerView.Adapter<GalleryAdapterFo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, final int position) {
         byte[] imageBytes = mImageList.get(position);
         Glide.with(mContext)
                 .load(imageBytes)
                 .into(holder.imageView);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onItemClick(v, position);
+                }
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -58,12 +77,24 @@ public class GalleryAdapterForComm extends RecyclerView.Adapter<GalleryAdapterFo
         return mImageList.size();
     }
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
+
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageReviewShow);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

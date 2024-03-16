@@ -12,6 +12,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Laissez votre avis :"
+        app:layout_constraintEnd_toStartOf="@+id/NombreAvis"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,20 +64,6 @@
         app:layout_constraintTop_toBottomOf="@+id/AvisDescription"
         app:layout_constraintVertical_bias="0.02" />
 
-    <EditText
-        android:id="@+id/NombreAvis"
-        android:layout_width="62dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="200dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
-
     <ListView
         android:id="@+id/ListeAvis"
         android:layout_width="0dp"
@@ -104,14 +91,13 @@
         android:id="@+id/camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="225dp"
         android:text="camera"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/NombreAvis"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintHorizontal_bias="0.949"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NombreAvis"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.786" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/GalleryPhotoInReview"
@@ -129,5 +115,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AuteurAvis"
         app:layout_constraintVertical_bias="0.394" />
+
+    <RatingBar
+        android:id="@+id/NombreAvis"
+        android:layout_width="236dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/AvisDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/GalleryPhotoInReview"
+        app:layout_constraintTop_toBottomOf="@+id/AuteurAvis" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

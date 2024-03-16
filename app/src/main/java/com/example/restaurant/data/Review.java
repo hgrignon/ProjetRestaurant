@@ -9,7 +9,7 @@ import java.util.Collection;
 public class Review {
     String restaurantId;
     String auteur;
-    int nbEtoiles;
+    float nbEtoiles;
     String avis;
     ArrayList<byte[]> pictures;
 
@@ -30,7 +30,7 @@ public class Review {
         return (int) o.get("nbEtoiles");
     }
 
-    public Review(String restaurantId,String auteur, int nbEtoiles, String avis, ArrayList<byte[]> pictures) {
+    public Review(String restaurantId,String auteur, float nbEtoiles, String avis, ArrayList<byte[]> pictures) {
         this.restaurantId = restaurantId;
         this.auteur = auteur;
         this.nbEtoiles = nbEtoiles;
@@ -54,7 +54,7 @@ public class Review {
         this.auteur = auteur;
     }
 
-    public int getNbEtoiles() {
+    public float getNbEtoiles() {
         return nbEtoiles;
     }
 
