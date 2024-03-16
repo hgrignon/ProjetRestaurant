@@ -34,7 +34,6 @@ import java.util.ArrayList;
 public class ReviewActivity extends AppCompatActivity {
 
     public RestaurantServices restaurantServices = new RestaurantServicesImpl();
-    final int THUMBSIZE = 64;
     Context context;
     ArrayList<Uri> listImage= new ArrayList<>();
     @Override
@@ -139,7 +138,6 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             });
 
-    // Call this method when you want to start the activity
     private void launchCameraActivity(Intent intent) {
         startActivityIntent.launch(intent);
     }

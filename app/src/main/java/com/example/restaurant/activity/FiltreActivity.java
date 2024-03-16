@@ -25,7 +25,6 @@ public class FiltreActivity extends AppCompatActivity {
 
         if (path != null) {
             ImageView imageView = findViewById(R.id.PhotoPrise);
-            // Charger l'image à partir du chemin absolu et l'afficher dans l'ImageView
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
