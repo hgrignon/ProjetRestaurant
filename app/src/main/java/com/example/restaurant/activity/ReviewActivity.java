@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -68,12 +69,12 @@ public class ReviewActivity extends AppCompatActivity {
                 EditText avisId = (EditText)findViewById(R.id.AvisDescription);
                 String avis = avisId.getText().toString();
 
-                EditText numberId = (EditText)findViewById(R.id.NombreAvis);
-                String nb = numberId.getText().toString();
+                RatingBar numberId = findViewById(R.id.NombreAvis);
+                float nb = numberId.getRating();
 
 
-                if(!auteur.isEmpty() && !avis.isEmpty() && !nb.isEmpty()){
-                    int nombre = Integer.valueOf(numberId.getText().toString());
+                if(!auteur.isEmpty() && !avis.isEmpty()){
+                    float nombre = nb*2;
                     Review review = null;
                     try {
                         review = new Review(id,auteur,nombre,avis,getImagesFromURI(listImage));
@@ -83,7 +84,7 @@ public class ReviewActivity extends AppCompatActivity {
                     restaurantServices.addReview(review);
                     auteurId.setText("");
                     avisId.setText("");
-                    numberId.setText("");
+                    numberId.setRating(0);
                     listImage.clear();
                 } else {
                     Toast.makeText(context,"remplissez tout les champs", Toast.LENGTH_SHORT).show();
