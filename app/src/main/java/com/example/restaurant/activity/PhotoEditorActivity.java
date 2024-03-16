@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -33,15 +32,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.lifecycle.*;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 
+import com.bumptech.glide.Glide;
 import com.example.restaurant.R;
 import com.example.restaurant.activity.adapter.EditingToolsAdapter;
 import com.example.restaurant.enums.ToolType;
-import com.example.restaurant.services.RestaurantServices;
-import com.example.restaurant.services.RestaurantServicesImpl;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -53,16 +50,15 @@ import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 import ja.burhanrashid52.photoeditor.PhotoFilter;
-import ja.burhanrashid52.photoeditor.SaveFileResult;
 import ja.burhanrashid52.photoeditor.SaveSettings;
 import ja.burhanrashid52.photoeditor.ViewType;
 import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
-import kotlinx.coroutines.CoroutineScope;
 
 public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, FilterListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     public static final int READ_WRITE_STORAGE = 52;
+    String saveUrl;
     PhotoEditorView mPhotoEditorView;
     PhotoEditor mPhotoEditor;
     TextView mTxtCurrentTool;
@@ -85,6 +81,14 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_image);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras == null){
+            saveUrl="Not Found";
+        }
+        else{
+            saveUrl = extras.getString("imagePath");
+        }
+
         initViews();
 
         LinearLayoutManager llmTools = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -96,7 +100,8 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         mRvFilters.setAdapter(mFilterViewAdapter);
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
-        mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
+        Glide.with(this).load(saveUrl).into(mPhotoEditorView.getSource());
+        //mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
 
         mStickerBSFragment = new StickerBSFragment();
         mStickerBSFragment.setStickerListener(this);
@@ -116,7 +121,6 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
 
         mPhotoEditor.setOnPhotoEditorListener(this);
-        mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
         mSaveFileHelper = new FileSaveHelper(this);
     }
 
@@ -190,27 +194,21 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
             startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_REQUEST);
         }
         else if(v.getId() == R.id.imgSave){
-            saveImage();
+            saveImage(saveUrl);
         }
         else if(v.getId() == R.id.imgClose){
             onBackPressed();
         }
-            //case R.id.imgCamera:
-              //  Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                //break;
-
     }
 
 
     @SuppressLint("MissingPermission")
-    private void saveImage() {
+    private void saveImage(String path) {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showLoading("Saving...");
-            File file = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + ""
-                    + System.currentTimeMillis() + ".png");
+            Uri pathuri = Uri.parse(path);
             try {
+                File file = new File(pathuri.getPath());
                 file.createNewFile();
 
                 SaveSettings saveSettings = new SaveSettings.Builder()
