@@ -86,6 +86,8 @@ public class ReviewActivity extends AppCompatActivity {
                     avisId.setText("");
                     numberId.setRating(0);
                     listImage.clear();
+                    Toast.makeText(context,"Review envoyée", Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(context,"remplissez tout les champs", Toast.LENGTH_SHORT).show();
                 }
