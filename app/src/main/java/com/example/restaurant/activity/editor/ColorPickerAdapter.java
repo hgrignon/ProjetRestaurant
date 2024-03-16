@@ -1,4 +1,4 @@
-package com.example.restaurant.activity;
+package com.example.restaurant.activity.editor;
 
 import android.content.Context;
 import android.view.LayoutInflater;

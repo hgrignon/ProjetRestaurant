@@ -1,4 +1,4 @@
-package com.example.restaurant.activity;
+package com.example.restaurant.activity.editor;
 
 import ja.burhanrashid52.photoeditor.PhotoFilter;
 

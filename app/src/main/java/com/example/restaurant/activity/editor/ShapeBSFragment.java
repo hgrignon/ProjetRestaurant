@@ -1,4 +1,4 @@
-package com.example.restaurant.activity;
+package com.example.restaurant.activity.editor;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restaurant.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.Properties;
 
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
 
