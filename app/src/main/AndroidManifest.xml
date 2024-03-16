@@ -61,7 +61,10 @@
             android:name=".activity.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.FiltreActivity"
+            android:name=".activity.editor.FiltreActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activity.PhotoEditorActivity"
             android:exported="false"/>
 
     </application>

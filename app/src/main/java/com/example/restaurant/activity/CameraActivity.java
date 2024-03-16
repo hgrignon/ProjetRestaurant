@@ -568,8 +568,9 @@ public class CameraActivity extends AppCompatActivity {
                     super.onCaptureCompleted(session, request, result);
                     Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
 
-                    final Intent intent = new Intent(CameraActivity.this, ReviewActivity.class); // a changer quand les filtres seront fini
+                    final Intent intent = new Intent(CameraActivity.this, PhotoEditorActivity.class);
                     intent.putExtra("imagePath", Uri.fromFile(file).toString());
+                    CameraActivity.this.startActivity(intent);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
