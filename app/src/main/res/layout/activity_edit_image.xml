@@ -47,26 +47,6 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imgGallery"
-        android:layout_width="@dimen/top_tool_icon_width"
-        android:layout_height="wrap_content"
-        android:background="@color/semi_black_transparent"
-        android:padding="8dp"
-        android:src="@drawable/ic_gallery"
-        app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imgCamera"
-        android:layout_width="@dimen/top_tool_icon_width"
-        android:layout_height="wrap_content"
-        android:background="@color/semi_black_transparent"
-        android:padding="8dp"
-        android:src="@drawable/ic_camera"
-        app:layout_constraintBottom_toTopOf="@+id/rvConstraintTools"
-        app:layout_constraintStart_toEndOf="@id/imgGallery" />
-
-    <ImageView
         android:id="@+id/imgClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -165,12 +165,6 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
         ImageView imgRedo = findViewById(R.id.imgRedo);
         imgRedo.setOnClickListener(this);
 
-        ImageView imgCamera = findViewById(R.id.imgCamera);
-        imgCamera.setOnClickListener(this);
-
-        ImageView imgGallery = findViewById(R.id.imgGallery);
-        imgGallery.setOnClickListener(this);
-
         ImageView imgSave = findViewById(R.id.imgSave);
         imgSave.setOnClickListener(this);
 
@@ -184,12 +178,6 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 mPhotoEditor.undo();}
         else if (v.getId() == R.id.imgRedo) {
             mPhotoEditor.redo();
-        }
-        else if(v.getId() == R.id.imgGallery) {
-            Intent galleryIntent = new Intent();
-            galleryIntent.setType("image/*");
-            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_REQUEST);
         }
         else if(v.getId() == R.id.imgSave){
             saveImage(saveUrl, new SaveImageCallback() {
