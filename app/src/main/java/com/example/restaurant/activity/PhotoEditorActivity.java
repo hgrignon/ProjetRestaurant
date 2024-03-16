@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
@@ -194,7 +192,12 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
             startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), PICK_REQUEST);
         }
         else if(v.getId() == R.id.imgSave){
-            saveImage(saveUrl);
+            saveImage(saveUrl, new SaveImageCallback() {
+                @Override
+                public void onSaveImageComplete() {
+                    onBackPressed();
+                }
+            });
         }
         else if(v.getId() == R.id.imgClose){
             onBackPressed();
@@ -203,7 +206,7 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
 
     @SuppressLint("MissingPermission")
-    private void saveImage(String path) {
+    private void saveImage(String path, SaveImageCallback callback) {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showLoading("Saving...");
             Uri pathuri = Uri.parse(path);
@@ -222,6 +225,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                         hideLoading();
                         showSnackbar("Image Saved Successfully");
                         mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
+                        if (callback!=null){
+                            callback.onSaveImageComplete();
+                        }
                     }
 
                     @Override
