@@ -3,6 +3,7 @@ package com.example.restaurant.activity;
 import android.annotation.SuppressLint;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -375,4 +377,47 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     public void onFilterSelected(PhotoFilter photoFilter) {
         mPhotoEditor.setFilterEffect(photoFilter);
     }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mIsFilterVisible) {
+            showFilter(false);
+            mTxtCurrentTool.setText(R.string.app_name);
+        } else if (!mPhotoEditor.isCacheEmpty()) {
+            showSaveDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.msg_save_image));
+        builder.setPositiveButton("Sauvegarder", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveImage(saveUrl, new SaveImageCallback() {
+                    @Override
+                    public void onSaveImageComplete() {
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Rester", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNeutralButton("Quitter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.create().show();
+    }
+
 }
