@@ -18,8 +18,11 @@ import com.example.restaurant.R;
 import com.example.restaurant.data.Restaurant;
 import com.example.restaurant.services.RestaurantServices;
 import com.example.restaurant.services.RestaurantServicesImpl;
+import com.wdullaer.materialdatetimepicker.BuildConfig;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.config.IConfigurationProvider;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -36,6 +39,8 @@ public class MapActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        IConfigurationProvider provider = Configuration.getInstance();
+        provider.setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         setContentView(R.layout.activity_map);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -51,7 +56,7 @@ public class MapActivity extends AppCompatActivity {
         LinearLayout bot_menu_layout = (LinearLayout) findViewById(R.id.bot_menu);
         bot_menu_layout.setVisibility(View.INVISIBLE);
 
-        List<Restaurant> restaurantList =  restaurantServices.parseRestaurants();
+        List<Restaurant> restaurantList = restaurantServices.parseRestaurants();
         for (Restaurant r : restaurantList) {
             if (r.getPosition() != null) {
                 Marker marker = new Marker(map);
@@ -62,8 +67,8 @@ public class MapActivity extends AppCompatActivity {
                     text.setText(r.getNom());
                     Button button = (Button) findViewById(R.id.bot_button_details);
                     button.setOnClickListener(a -> {
-                    Intent intentMain = new Intent(MapActivity.this ,
-                            RestaurantDetailsActivity.class);
+                        Intent intentMain = new Intent(MapActivity.this,
+                                RestaurantDetailsActivity.class);
                         intentMain.putExtra("idObject", r.getObjectId());
                         MapActivity.this.startActivity(intentMain);
                     });
@@ -77,12 +82,14 @@ public class MapActivity extends AppCompatActivity {
 
     public void onResume(){
         super.onResume();
-        map.onResume();
+        if (map != null)
+            map.onResume();
     }
 
     public void onPause(){
         super.onPause();
-        map.onPause();
+        if (map != null)
+            map.onPause();
     }
 
     @Override
