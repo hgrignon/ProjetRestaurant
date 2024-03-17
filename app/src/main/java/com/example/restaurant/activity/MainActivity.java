@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Restaurant> restaurants = initListe();
         RestaurantAdapter adapter = new RestaurantAdapter(this, restaurants);
         listRestaurant.setAdapter(adapter);
-
     }
 
     public ArrayList<Restaurant> initListe(){
