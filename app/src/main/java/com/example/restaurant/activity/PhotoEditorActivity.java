@@ -43,6 +43,7 @@ import com.example.restaurant.activity.editor.FilterViewAdapter;
 import com.example.restaurant.activity.editor.SaveImageCallback;
 import com.example.restaurant.activity.editor.ShapeBSFragment;
 import com.example.restaurant.activity.editor.StickerBSFragment;
+import com.example.restaurant.activity.editor.TextEditorDialogFragment;
 import com.example.restaurant.enums.ToolType;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -273,17 +274,15 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 mTxtCurrentTool.setText(R.string.label_shape);
                 showBottomSheetDialogFragment(mShapeBSFragment);
                 break;
-            /*case TEXT:
-                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
-                textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
-                    @Override
-                    public void onDone(String inputText, int colorCode) {
-                        mPhotoEditor.addText(inputText, colorCode);
-                        mTxtCurrentTool.setText(R.string.label_text);
-                    }
+
+            case TEXT:
+                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, "Texte", 0);
+                textEditorDialogFragment.setOnTextEditorListener((inputText, colorCode) -> {
+                    mPhotoEditor.addText(inputText, colorCode);
+                    mTxtCurrentTool.setText(R.string.label_text);
                 });
                 break;
-            case ERASER:
+            /*case ERASER:
                 mPhotoEditor.brushEraser();
                 mTxtCurrentTool.setText(R.string.label_eraser);
                 break;
