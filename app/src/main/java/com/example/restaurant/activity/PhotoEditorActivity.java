@@ -282,11 +282,11 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                     mTxtCurrentTool.setText(R.string.label_text);
                 });
                 break;
-            /*case ERASER:
+            case ERASER:
                 mPhotoEditor.brushEraser();
                 mTxtCurrentTool.setText(R.string.label_eraser);
                 break;
-
+            /*
             case EMOJI:
                 mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
                 break;*/
