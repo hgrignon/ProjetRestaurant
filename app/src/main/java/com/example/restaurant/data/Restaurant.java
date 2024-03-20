@@ -1,58 +1,113 @@
 package com.example.restaurant.data;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+
+import org.osmdroid.util.GeoPoint;
+
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Restaurant {
+    String objectId;
     String nom;
-    Float etoiles;
+    int nbEtoiles;
     String adresse;
     String description;
-    Review avis; // Liste? jsp
-    InfoReservations infos;
-    Reservation resa; // Liste? jsp
+    RestaurantLabel labels;
+    GeoPoint position;
+    Bitmap image;
+    int capacity;
 
-    //Image;
-    //Menu
+    public final static Collection<String> RestaurantListView = Arrays.asList("objectId", "nom", "latitude", "longitude", "adresse");
+    public final static Collection<String> RestaurantDetailsView = Arrays.asList("objectId", "nom", "adresse", "description", "image", "capacity");
 
-    public Restaurant(String nom, Float nbEtoiles) {
-        this.nom = nom;
-        this.etoiles = nbEtoiles;
+    public static Restaurant RestaurantAdapterList(ParseObject o, int nbEtoiles) {
+        return new Restaurant(
+                (String) o.getObjectId(),
+                (String) o.get("nom"),
+                nbEtoiles,
+                (Double) o.get("latitude"),
+                (Double) o.get("longitude"),
+                (String) o.get("adresse")
+                );
     }
 
-    public Restaurant(String nom, float nbEtoiles, String adresse, String description) {
+    public static Restaurant RestaurantAdapterDetails(ParseObject o, int nbEtoiles) {
+        return new Restaurant(
+                (String) o.get("nom"),
+                nbEtoiles,
+                (String) o.get("adresse"),
+                (String) o.get("description"),
+                (ParseFile) o.get("image"),
+                (int) o.get("capacity")
+        );
+    }
+
+    public Restaurant(String objectId, String nom, int nbEtoiles, Double latitude, Double longitude, String adresse) {
+        this.objectId = objectId;
         this.nom = nom;
-        this.etoiles = nbEtoiles;
+        this.nbEtoiles = nbEtoiles;
+        if (latitude != null && longitude != null )
+            this.position = new GeoPoint(latitude, longitude);
+        this.adresse = adresse;
+    }
+    public Restaurant(String nom, int nbEtoiles) {
+        this.nom = nom;
+        this.nbEtoiles = nbEtoiles;
+    }
+    public Restaurant(String nom, int nbEtoiles, String adresse, String description, ParseFile image, int capacity) {
+        this.nom = nom;
+        this.nbEtoiles = nbEtoiles;
         this.adresse = adresse;
         this.description = description;
+        this.setImage(image);
+        this.capacity = capacity;
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Float getEtoiles() {
-        return etoiles;
-    }
-
-    public void setEtoiles(Float etoiles) {
-        this.etoiles = etoiles;
+    public int getNbEtoiles() {
+        return nbEtoiles;
     }
 
     public String getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public GeoPoint getPosition() {
+        return position;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    private void setImage(ParseFile image) {
+        if (image != null ) {
+            try {
+                this.image = BitmapFactory.decodeByteArray(image.getData(), 0, image.getData().length);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }
