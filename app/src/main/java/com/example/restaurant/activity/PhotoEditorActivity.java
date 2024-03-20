@@ -3,6 +3,7 @@ package com.example.restaurant.activity;
 import android.annotation.SuppressLint;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -35,12 +37,14 @@ import androidx.transition.TransitionManager;
 import com.bumptech.glide.Glide;
 import com.example.restaurant.R;
 import com.example.restaurant.activity.adapter.EditingToolsAdapter;
+import com.example.restaurant.activity.editor.EmojiBSFragment;
 import com.example.restaurant.activity.editor.FileSaveHelper;
 import com.example.restaurant.activity.editor.FilterListener;
 import com.example.restaurant.activity.editor.FilterViewAdapter;
 import com.example.restaurant.activity.editor.SaveImageCallback;
 import com.example.restaurant.activity.editor.ShapeBSFragment;
 import com.example.restaurant.activity.editor.StickerBSFragment;
+import com.example.restaurant.activity.editor.TextEditorDialogFragment;
 import com.example.restaurant.enums.ToolType;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,7 +62,7 @@ import ja.burhanrashid52.photoeditor.ViewType;
 import ja.burhanrashid52.photoeditor.shape.ShapeBuilder;
 import ja.burhanrashid52.photoeditor.shape.ShapeType;
 
-public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, FilterListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
+public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEditorListener, EmojiBSFragment.EmojiListener, FilterListener, StickerBSFragment.StickerListener, ShapeBSFragment.Properties, View.OnClickListener, EditingToolsAdapter.OnItemSelected {
     private static final int PICK_REQUEST = 53   ;
     public static final int READ_WRITE_STORAGE = 52;
     String saveUrl;
@@ -71,6 +75,7 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     ShapeBuilder mShapeBuilder;
     ShapeBSFragment mShapeBSFragment;
     StickerBSFragment mStickerBSFragment;
+    EmojiBSFragment mEmojiBSFragment;
     boolean mIsFilterVisible = false;
     FileSaveHelper mSaveFileHelper;
     ProgressDialog mProgressDialog = null;
@@ -104,7 +109,6 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
         Glide.with(this).load(saveUrl).into(mPhotoEditorView.getSource());
-        //mPhotoEditorView.getSource().setImageResource(R.drawable.restaurant_placeholder);
 
         mStickerBSFragment = new StickerBSFragment();
         mStickerBSFragment.setStickerListener(this);
@@ -114,6 +118,9 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
 
         mShapeBSFragment = new ShapeBSFragment();
         mShapeBSFragment.setPropertiesChangeListener(this);
+
+        mEmojiBSFragment = new EmojiBSFragment();
+        mEmojiBSFragment.setEmojiListener(this);
 
         mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
                 .setPinchTextScalable(true)
@@ -271,24 +278,21 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
                 mTxtCurrentTool.setText(R.string.label_shape);
                 showBottomSheetDialogFragment(mShapeBSFragment);
                 break;
-            /*case TEXT:
-                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this);
-                textEditorDialogFragment.setOnTextEditorListener(new TextEditorDialogFragment.TextEditor() {
-                    @Override
-                    public void onDone(String inputText, int colorCode) {
-                        mPhotoEditor.addText(inputText, colorCode);
-                        mTxtCurrentTool.setText(R.string.label_text);
-                    }
+
+            case TEXT:
+                TextEditorDialogFragment textEditorDialogFragment = TextEditorDialogFragment.show(this, "Texte", 0);
+                textEditorDialogFragment.setOnTextEditorListener((inputText, colorCode) -> {
+                    mPhotoEditor.addText(inputText, colorCode);
+                    mTxtCurrentTool.setText(R.string.label_text);
                 });
                 break;
             case ERASER:
                 mPhotoEditor.brushEraser();
                 mTxtCurrentTool.setText(R.string.label_eraser);
                 break;
-
             case EMOJI:
                 mEmojiBSFragment.show(getSupportFragmentManager(), mEmojiBSFragment.getTag());
-                break;*/
+                break;
             case FILTER:
                 mTxtCurrentTool.setText(R.string.label_filter);
                 showFilter(true);
@@ -374,5 +378,53 @@ public class PhotoEditorActivity extends AppCompatActivity implements OnPhotoEdi
     @Override
     public void onFilterSelected(PhotoFilter photoFilter) {
         mPhotoEditor.setFilterEffect(photoFilter);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (mIsFilterVisible) {
+            showFilter(false);
+            mTxtCurrentTool.setText(R.string.app_name);
+        } else if (!mPhotoEditor.isCacheEmpty()) {
+            showSaveDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.msg_save_image));
+        builder.setPositiveButton("Sauvegarder", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveImage(saveUrl, new SaveImageCallback() {
+                    @Override
+                    public void onSaveImageComplete() {
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Rester", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNeutralButton("Quitter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public void onEmojiClick(String emojiUnicode) {
+        mPhotoEditor.addEmoji(emojiUnicode);
+        mTxtCurrentTool.setText(R.string.label_emoji);
     }
 }
