@@ -50,14 +50,24 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         findViewById(R.id.stars).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ReviewActivity.class);
-                intent.putExtra("idRestaurant",id);
-                RestaurantDetailsActivity.this.startActivity(intent);
+                reviewIntent(RestaurantDetailsActivity.this, id);
+            }
+        });
+
+        findViewById(R.id.accessReviews).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reviewIntent(RestaurantDetailsActivity.this, id);
             }
         });
 
     }
 
+    void reviewIntent(Context context, String id){
+        Intent intent = new Intent(context, ReviewActivity.class);
+        intent.putExtra("idRestaurant",id);
+        RestaurantDetailsActivity.this.startActivity(intent);
+    }
 
     private void setDetailsImage(Restaurant resto) {
         if (resto.getImage() != null) {
