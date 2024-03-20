@@ -15,21 +15,12 @@ import java.util.Collection;
 public class Restaurant {
     String objectId;
     String nom;
-    // 1 = 1/2 etoiles
     int nbEtoiles;
     String adresse;
     String description;
-    Review avis; // Liste? jsp
-    InfoReservations infos;
-    Reservation resa; // Liste? jsp
-    RestaurantLabel labels; // Liste? jsp
-
+    RestaurantLabel labels;
     GeoPoint position;
-
     Bitmap image;
-    //Image;
-    //Menu
-
     int capacity;
 
     public final static Collection<String> RestaurantListView = Arrays.asList("objectId", "nom", "latitude", "longitude", "adresse");

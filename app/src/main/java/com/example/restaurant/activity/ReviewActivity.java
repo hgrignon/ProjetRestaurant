@@ -50,8 +50,6 @@ public class ReviewActivity extends AppCompatActivity {
         ReviewAdapter adapter = new ReviewAdapter(this, reviews);
         listReview.setAdapter(adapter);
 
-
-
         findViewById(R.id.camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
